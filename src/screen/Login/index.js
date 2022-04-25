@@ -36,6 +36,7 @@ export const LoginPage = ({navigation}) => {
       />
       <Text>Password</Text>
       <TextInput
+        secureTextEntry={true}
         onChangeText={value => handlerChangeText('password', value)}
         style={{borderWidth: 1}}
       />

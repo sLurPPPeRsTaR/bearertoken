@@ -35,7 +35,10 @@ export const RegisterPage = ({navigation}) => {
       <Text>Email</Text>
       <TextInput onChangeText={value => handlerChangeText('email', value)} />
       <Text>Password</Text>
-      <TextInput onChangeText={value => handlerChangeText('password', value)} />
+      <TextInput
+        secureTextEntry={true}
+        onChangeText={value => handlerChangeText('password', value)}
+      />
       <Button title="register" onPress={registerHandler} />
     </View>
   );

@@ -47,17 +47,20 @@ export const DetailPage = ({route}) => {
 
   const submitHandler = () => {
     if (edit.id) {
+      const tempEdit = {
+        itemName: activitiesDetail.itemName,
+      };
       Axios.put(
-        `${base_URL}/checklist/${route.params.id}/item/${activitiesDetail.id}`,
-        activitiesDetail,
+        `${base_URL}/checklist/${route.params.id}/item/rename/${edit.id}`,
+        tempEdit,
         config,
       )
         .then(res => {
           console.log('success', res);
-          // setActivitiesDetails([...activitiesDetails, res]);
-          // getAPI();
-          // setEdit('');
-          // setActivitiesDetail('');
+          setActivitiesDetails([...activitiesDetails, res]);
+          getAPI();
+          setEdit('');
+          setActivitiesDetail('');
         })
         .catch(err => console.log(err));
       return;
@@ -115,7 +118,6 @@ export const DetailPage = ({route}) => {
         data={activitiesDetails}
         key={item => item.id}
         renderItem={({item}) => {
-          console.log(item);
           return (
             <View
               style={{
@@ -130,13 +132,20 @@ export const DetailPage = ({route}) => {
                   item.name
                 )}
               </Text>
-              <Button title="Complete" onPress={() => completeHandler(item)} />
+              {!edit.id && (
+                <Button
+                  title="Complete"
+                  onPress={() => completeHandler(item)}
+                />
+              )}
               <View style={{marginHorizontal: 10}} />
               {!item.itemCompletionStatus && (
                 <Button title="edit" onPress={() => editHandler(item)} />
               )}
               <View style={{marginHorizontal: 10}} />
-              <Button title="del" onPress={() => delHandler(item)} />
+              {!edit.id && (
+                <Button title="del" onPress={() => delHandler(item)} />
+              )}
             </View>
           );
         }}
