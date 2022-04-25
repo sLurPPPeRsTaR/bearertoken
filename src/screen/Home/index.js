@@ -8,7 +8,6 @@ const base_URL = 'http://94.74.86.174:8080/api';
 export const HomePage = ({route}) => {
   const [activities, setActivities] = useState([]);
   const [activity, setActivity] = useState({});
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   const tokenAPI = route.params;
   const config = {
@@ -44,23 +43,13 @@ export const HomePage = ({route}) => {
       })
       .catch(err => console.log(err));
   };
-  console.log(activities);
 
   const delHandler = item => {
-    // console.log(item.id);
-    // const copy = [...activities];
-    // const filter = copy.filter(el => {
-    //   return el.id != item.id;
-    // });
-    // Axios.post(`${base_URL}/checklist`, filter, config)
-    //   .then(() => {
-    //     console.log('success');
-    //     getAPI();
-    //   })
-    //   .catch(err => console.log(err));
-
-    Axios.delete(`${base_URL}/checklist/${item.id}`)
-      .then(() => console.log('success'))
+    Axios.delete(`${base_URL}/checklist/${item.id}`, config)
+      .then(() => {
+        console.log('success');
+        getAPI();
+      })
       .catch(err => console.log(err));
   };
 
@@ -93,11 +82,6 @@ export const HomePage = ({route}) => {
                 justifyContent: 'space-between',
                 marginTop: 15,
               }}>
-              <CheckBox
-                disabled={false}
-                value={toggleCheckBox}
-                onValueChange={newValue => setToggleCheckBox(newValue)}
-              />
               <Text style={{flex: 1}}>{item.name}</Text>
               <Text>{item.items}</Text>
               <Button title="del" onPress={() => delHandler(item)} />
