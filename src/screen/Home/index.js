@@ -7,7 +7,10 @@ const base_URL = 'http://94.74.86.174:8080/api';
 
 export const HomePage = ({route}) => {
   const [activities, setActivities] = useState([]);
-  const [activity, setActivity] = useState({});
+  const [activity, setActivity] = useState({
+    name: '',
+    items: '',
+  });
 
   const tokenAPI = route.params;
   const config = {
@@ -57,20 +60,29 @@ export const HomePage = ({route}) => {
     <View>
       <Text>Checklist</Text>
       <Text>your daily : </Text>
-      <TextInput
-        style={{borderWidth: 1}}
-        onChangeText={value => {
-          onChangeHandler('name', value);
-        }}
-      />
-      <TextInput
-        style={{borderWidth: 1}}
-        onChangeText={value => {
-          onChangeHandler('items', value);
-        }}
-      />
+      <Text>name</Text>
+      <View>
+        <TextInput
+          style={{borderWidth: 1}}
+          value={activity.name}
+          onChangeText={value => {
+            onChangeHandler('name', value);
+          }}
+        />
+      </View>
+      <View>
+        <Text>items</Text>
+        <TextInput
+          style={{borderWidth: 1}}
+          value={activity.items}
+          onChangeText={value => {
+            onChangeHandler('items', value);
+          }}
+        />
+      </View>
+      <View style={{height: 25}} />
       <Button title="submit" onPress={submitHandler} />
-
+      <View style={{height: 25}} />
       <FlatList
         data={activities}
         key={item => item.id}
