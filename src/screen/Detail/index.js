@@ -35,8 +35,34 @@ export const DetailPage = ({route}) => {
     });
   };
 
+  const completeHandler = item => {
+    Axios.put(
+      `${base_URL}/checklist/${route.params.id}/item/${item.id}`,
+      activitiesDetail,
+      config,
+    ).then(() => {
+      getAPI();
+    });
+  };
+
   const submitHandler = () => {
-    console.log(activitiesDetail);
+    if (edit.id) {
+      Axios.put(
+        `${base_URL}/checklist/${route.params.id}/item/${activitiesDetail.id}`,
+        activitiesDetail,
+        config,
+      )
+        .then(res => {
+          console.log('success', res);
+          // setActivitiesDetails([...activitiesDetails, res]);
+          // getAPI();
+          // setEdit('');
+          // setActivitiesDetail('');
+        })
+        .catch(err => console.log(err));
+      return;
+    }
+
     Axios.post(
       `${base_URL}/checklist/${route.params.id}/item`,
       activitiesDetail,
@@ -62,8 +88,11 @@ export const DetailPage = ({route}) => {
       .catch(err => console.log(err));
   };
 
-  const editHandler = () => {
-    alert('edit');
+  const editHandler = item => {
+    setActivitiesDetail({
+      itemName: item.name,
+    });
+    setEdit(item);
   };
 
   return (
@@ -86,6 +115,7 @@ export const DetailPage = ({route}) => {
         data={activitiesDetails}
         key={item => item.id}
         renderItem={({item}) => {
+          console.log(item);
           return (
             <View
               style={{
@@ -93,8 +123,18 @@ export const DetailPage = ({route}) => {
                 justifyContent: 'space-between',
                 marginTop: 15,
               }}>
-              <Text style={{flex: 1}}>{item.name}</Text>
-              <Button title="edit" onPress={editHandler} />
+              <Text style={{flex: 1}}>
+                {item.itemCompletionStatus === true ? (
+                  <Text>COMPLETED</Text>
+                ) : (
+                  item.name
+                )}
+              </Text>
+              <Button title="Complete" onPress={() => completeHandler(item)} />
+              <View style={{marginHorizontal: 10}} />
+              {!item.itemCompletionStatus && (
+                <Button title="edit" onPress={() => editHandler(item)} />
+              )}
               <View style={{marginHorizontal: 10}} />
               <Button title="del" onPress={() => delHandler(item)} />
             </View>
