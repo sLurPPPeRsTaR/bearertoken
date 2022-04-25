@@ -5,7 +5,7 @@ import CheckBox from '@react-native-community/checkbox';
 
 const base_URL = 'http://94.74.86.174:8080/api';
 
-export const HomePage = ({route}) => {
+export const HomePage = ({navigation, route}) => {
   const [activities, setActivities] = useState([]);
   const [activity, setActivity] = useState({
     name: '',
@@ -57,9 +57,8 @@ export const HomePage = ({route}) => {
   };
 
   return (
-    <View>
+    <View style={{padding: 30}}>
       <Text>Checklist</Text>
-      <Text>your daily : </Text>
       <Text>name</Text>
       <View>
         <TextInput
@@ -70,16 +69,6 @@ export const HomePage = ({route}) => {
           }}
         />
       </View>
-      <View>
-        <Text>items</Text>
-        <TextInput
-          style={{borderWidth: 1}}
-          value={activity.items}
-          onChangeText={value => {
-            onChangeHandler('items', value);
-          }}
-        />
-      </View>
       <View style={{height: 25}} />
       <Button title="submit" onPress={submitHandler} />
       <View style={{height: 25}} />
@@ -87,6 +76,7 @@ export const HomePage = ({route}) => {
         data={activities}
         key={item => item.id}
         renderItem={({item}) => {
+          const id = item.id;
           return (
             <View
               style={{
@@ -96,6 +86,13 @@ export const HomePage = ({route}) => {
               }}>
               <Text style={{flex: 1}}>{item.name}</Text>
               <Text>{item.items}</Text>
+              <Button
+                title="detail"
+                onPress={() =>
+                  navigation.navigate('Detail_Screen', {tokenAPI, id})
+                }
+              />
+              <View style={{marginHorizontal: 10}} />
               <Button title="del" onPress={() => delHandler(item)} />
             </View>
           );

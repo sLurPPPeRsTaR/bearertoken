@@ -28,12 +28,20 @@ export const LoginPage = ({navigation}) => {
   };
 
   return (
-    <View>
+    <View style={{padding: 30}}>
       <Text>UserName</Text>
-      <TextInput onChangeText={value => handlerChangeText('username', value)} />
+      <TextInput
+        onChangeText={value => handlerChangeText('username', value)}
+        style={{borderWidth: 1}}
+      />
       <Text>Password</Text>
-      <TextInput onChangeText={value => handlerChangeText('password', value)} />
+      <TextInput
+        onChangeText={value => handlerChangeText('password', value)}
+        style={{borderWidth: 1}}
+      />
+      <View style={{height: 25}} />
       <Button title="login" onPress={loginHandler} />
+      <View style={{height: 25}} />
       <Button
         title="register"
         onPress={() => navigation.navigate('Register_Screen')}
