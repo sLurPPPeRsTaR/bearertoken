@@ -7,6 +7,7 @@ const base_URL = 'http://94.74.86.174:8080/api';
 export const DetailPage = ({route}) => {
   const [activitiesDetails, setActivitiesDetails] = useState([]);
   const [activitiesDetail, setActivitiesDetail] = useState({});
+  const [edit, setEdit] = useState({});
 
   const tokenAPI = route.params.tokenAPI;
   const config = {
@@ -36,22 +37,41 @@ export const DetailPage = ({route}) => {
 
   const submitHandler = () => {
     console.log(activitiesDetail);
-    // Axios.post(`${base_URL}/checklist`, activitiesDetail, config)
-    //   .then(res => {
-    //     console.log('success');
-    //     setActivities([...activities, res]);
-    //     getAPI();
-    //     setActivity('');
-    //   })
-    //   .catch(err => console.log(err));
+    Axios.post(
+      `${base_URL}/checklist/${route.params.id}/item`,
+      activitiesDetail,
+      config,
+    )
+      .then(res => {
+        setActivitiesDetails([...activitiesDetails, res]);
+        getAPI();
+        setActivitiesDetail('');
+      })
+      .catch(err => console.log(err));
+  };
+
+  const delHandler = item => {
+    Axios.delete(
+      `${base_URL}/checklist/${route.params.id}/item/${item.id}`,
+      config,
+    )
+      .then(() => {
+        console.log('success');
+        getAPI();
+      })
+      .catch(err => console.log(err));
+  };
+
+  const editHandler = () => {
+    alert('edit');
   };
 
   return (
-    <View style={{padding: 30}}>
+    <View style={{padding: 30, flex: 1}}>
       <Text>Detail Checklist</Text>
       <TextInput
         style={{borderWidth: 1}}
-        value={activitiesDetail.name}
+        value={activitiesDetail.itemName}
         onChangeText={value => {
           onChangeHandler('itemName', value);
         }}
@@ -61,10 +81,11 @@ export const DetailPage = ({route}) => {
       <View style={{height: 25}} />
 
       <FlatList
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         data={activitiesDetails}
         key={item => item.id}
         renderItem={({item}) => {
-          const id = item.id;
           return (
             <View
               style={{
@@ -73,10 +94,9 @@ export const DetailPage = ({route}) => {
                 marginTop: 15,
               }}>
               <Text style={{flex: 1}}>{item.name}</Text>
-              <Text>{item.items}</Text>
-              <Button title="edit" />
+              <Button title="edit" onPress={editHandler} />
               <View style={{marginHorizontal: 10}} />
-              <Button title="del" />
+              <Button title="del" onPress={() => delHandler(item)} />
             </View>
           );
         }}

@@ -1,7 +1,6 @@
 import {View, Text, TextInput, Button, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
-import CheckBox from '@react-native-community/checkbox';
 
 const base_URL = 'http://94.74.86.174:8080/api';
 
@@ -16,6 +15,7 @@ export const HomePage = ({navigation, route}) => {
   const config = {
     headers: {Authorization: `Bearer ${tokenAPI}`},
   };
+
   useEffect(() => {
     getAPI();
   }, []);
@@ -57,7 +57,7 @@ export const HomePage = ({navigation, route}) => {
   };
 
   return (
-    <View style={{padding: 30}}>
+    <View style={{padding: 30, flex: 1}}>
       <Text>Checklist</Text>
       <Text>name</Text>
       <View>
@@ -73,6 +73,8 @@ export const HomePage = ({navigation, route}) => {
       <Button title="submit" onPress={submitHandler} />
       <View style={{height: 25}} />
       <FlatList
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         data={activities}
         key={item => item.id}
         renderItem={({item}) => {
@@ -85,7 +87,6 @@ export const HomePage = ({navigation, route}) => {
                 marginTop: 15,
               }}>
               <Text style={{flex: 1}}>{item.name}</Text>
-              <Text>{item.items}</Text>
               <Button
                 title="detail"
                 onPress={() =>

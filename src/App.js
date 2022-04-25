@@ -5,10 +5,12 @@ import {HomePage} from './screen/Home';
 import {LoginPage} from './screen/Login';
 import {RegisterPage} from './screen/Register';
 import {DetailPage} from './screen/Detail';
+import {LogBox} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  LogBox.ignoreAllLogs(true);
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login_Screen">
